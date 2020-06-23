@@ -130,7 +130,7 @@ def get_model_xacro_file(vehicle_type):
     )
     try:
         model_pkg_path = rospack.get_path(model_pkg)
-    except rospkg.common.ResourceNotFound, e:
+    except (rospkg.common.ResourceNotFound, e):
          print_error("===================================================================================")
          print_error("   Package \'%s\' was not found. " % model_pkg)
          print_error("   Note: The selected model doesn't have to be publicly available.")
@@ -152,7 +152,7 @@ def check_for_uvdar_package():
 
     try:
         model_pkg_path = rospack.get_path(uvdar_pkg)
-    except rospkg.common.ResourceNotFound, e:
+    except (rospkg.common.ResourceNotFound, e):
          print_error("===================================================================================")
          print_error("   Package \'%s\' was not found. " % uvdar_pkg)
          print_error("   Note: This package is specific to the UVDAR project.")
@@ -167,7 +167,7 @@ def check_for_mrs_gazebo_extras_package():
 
     try:
         model_pkg_path = rospack.get_path(pkg_name)
-    except rospkg.common.ResourceNotFound, e:
+    except (rospkg.common.ResourceNotFound, e):
          print_error("===================================================================================")
          print_error("   Package \'%s\' was not found. " % pkg_name)
          print_error("   Note: This package is not part of the basic simulation, because it depends on packages inside of the MRS System")
@@ -334,7 +334,7 @@ def spawn_model(
     try:
         srv = ServiceProxy('/gazebo/spawn_sdf_model', SpawnModel)
         resp = srv(req)
-    except ServiceException, e:
+    except (ServiceException, e):
          print_error("===================================================================================")
          print_error("   Service call failed: %s" % e)
          print_error("   Please run gazebo_ros (for example: \"roslaunch mrs_simulation simulation.launch\")")
@@ -366,7 +366,7 @@ def detect_unused_arguments_in_xacro(template_xml, vehicle_type, mappings=None, 
         if "enable" in key:
             try:
                 eval_value = xacro.get_boolean_value(value, None) 
-            except xacro.XacroException, e:
+            except (xacro.XacroException, e):
                 continue
             if eval_value:
                 searchtext = "$(arg {})".format(key)
@@ -445,7 +445,7 @@ def delete_model(mav_sys_id, vehicle_type, ros_master_uri=None):
         unique_name = 'uav' + str(mav_sys_id)
         req.model_name = unique_name
         resp = srv(req)
-    except ServiceException, e:
+    except (ServiceException, e):
          print_error("===================================================================================")
          print_error("   Service call failed: %s" % e)
          print_error("===================================================================================")
